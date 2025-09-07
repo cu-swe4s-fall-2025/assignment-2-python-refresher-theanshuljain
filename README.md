@@ -1,2 +1,3 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/_G_SdF8U)
 # python-refresher
+The get_column function definition in the my_utils.py file helps us choose specific columns from any dataset and analyze the columns of choice. The print_fires.py file actually utilizes the get_column function from the my_utils.py file and gives us analysis about the forest fires in United States of America. The get_columns function is written in a way that defaults the results_column argument to have cleaner code and get whatever results we want based on the assignment. The run.sh file runs the print_fires.py file.

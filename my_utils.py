@@ -1,7 +1,7 @@
 import csv
 
 # Implement the get_column function
-def get_column(file_name, query_column, query_value, result_column):
+def get_column(file_name, query_column, query_value, result_column = 1):
     results = []                                # array to store results
 
     f = open(file_name, 'r')

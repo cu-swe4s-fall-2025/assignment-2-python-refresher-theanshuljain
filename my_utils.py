@@ -1,17 +1,31 @@
 import csv
 
-# Implement the get_column function
 def get_column(file_name, query_column, query_value, result_column = 1):
-    results = []                                # array to store results
 
-    f = open(file_name, 'r')
-    first_line = True
-    for l in f:
-        if first_line:
-            first_line = False                  # skipping the header
-            continue
-        A = l.rstrip().split(',')               # splitting each row into an array
-        if A[query_column] == query_value:      # comparing query_column with query_value
-            results.append(A[result_column])    # forming the results array
-    f.close()
+    # Array to store results
+    results = []
+
+    try:
+        with open(file_name, "r", newline = "", encoding = "utf-8") as f:
+            reader = csv.reader(f)
+
+            # Skip the header row
+            next(reader)
+
+            for row in reader:
+                # Skipping the row does not have the desired values
+                if len(row) <= max(query_column, result_column):
+                    continue
+
+                if row[query_column] == query_value:
+                    try:
+                        # Converting to Integers
+                        results.append(int(row[result_column]))
+                    except ValueError:
+                        # SKipping the values that cannot be convered to integers
+                        continue
+
+    except Exception as e:
+        print(f"Error: {e}")
+
     return results

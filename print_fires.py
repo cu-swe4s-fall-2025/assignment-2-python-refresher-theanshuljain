@@ -2,6 +2,12 @@ import argparse
 from my_utils import get_column
 
 def main():
+    """
+    print_fires.py
+
+    Command line arguments to extract forest fire data for a chosen country from the
+    Agrofood_co2_emission.csv dataset.
+    """
     # Take command line arguments
     parser = argparse.ArgumentParser(
         description = "Print the number of forest fires for a given country from Agrofood_co2_emission.csv dataset."
@@ -51,8 +57,12 @@ def main():
             result_column = args.fires_column
         )
         print(f"Number of forest fires in {args.country} are: {fires}.")
+    except FileNotFoundError as fnf_error:
+        print(fnf_error)
+    except ValueError as ve:
+        print(ve)
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Unexpected Error: {e}")
 
 # Main function
 if __name__ == "__main__":

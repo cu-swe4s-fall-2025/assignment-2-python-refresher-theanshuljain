@@ -1,69 +1,101 @@
+"""
+print_fires.py
+
+Command line interface for extracting forest fire data for a chosen country
+from the Agrofood_co2_emission.csv dataset. Optionally performs a statistical
+operation (mean, median, or stddev) on the extracted values.
+"""
+
 import argparse
-from my_utils import get_column
+import sys
+from my_utils import (
+    get_column,
+    calculate_mean,
+    calculate_median,
+    calculate_stddev,
+)
+
 
 def main():
-    """
-    print_fires.py
-
-    Command line arguments to extract forest fire data for a chosen country from the
-    Agrofood_co2_emission.csv dataset.
-    """
-    # Take command line arguments
+    """Main function to handle command line arguments and print results."""
     parser = argparse.ArgumentParser(
-        description = "Print the number of forest fires for a given country from Agrofood_co2_emission.csv dataset."
+        description=(
+            "Extract forest fire data for a given country from "
+            "Agrofood_co2_emission.csv and optionally perform "
+            "a statistical operation."
+        )
     )
 
-    # Command line argument for country
     parser.add_argument(
         "--country",
-        type = str,
-        required = True,
-        help = "Country of interest"
-    )
+        type=str,
+        required=True,
+        help="Country of interest."
+        )
 
-    # Command line argument for country_column
     parser.add_argument(
         "--country_column",
-        type = int,
-        required = True,
-        help = "Column number for the country of interest"
-    )
-    
-    # Command line argument for fires_column
+        type=int,
+        required=True,
+        help="Column number for the country of interest."
+        )
+
     parser.add_argument(
         "--fires_column",
-        type = int,
-        required = True,
-        help = "Column number for the forest fires"
-    )
+        type=int,
+        required=True,
+        help="Column number for the forest fires."
+        )
 
-    # Command line argument for file_name
     parser.add_argument(
         "--file_name",
-        type = str,
-        required = True,
-        help = ".csv file that has the data"
-    )
+        type=str,
+        required=True,
+        help="Path to the .csv file that contains the dataset."
+        )
 
-    # Creating args object to hold the values
+    parser.add_argument(
+        "--operation",
+        type=str,
+        choices=["mean", "median", "stddev"],
+        help="Optional statistical operation (mean, median, stddev)."
+        )
+
     args = parser.parse_args()
 
-    # Call the get_column function
     try:
         fires = get_column(
             args.file_name,
-            query_column = args.country_column,
-            query_value = args.country,
-            result_column = args.fires_column
+            query_column=args.country_column,
+            query_value=args.country,
+            result_column=args.fires_column
         )
-        print(f"Number of forest fires in {args.country} are: {fires}.")
-    except FileNotFoundError as fnf_error:
-        print(fnf_error)
-    except ValueError as ve:
-        print(ve)
-    except Exception as e:
-        print(f"Unexpected Error: {e}")
 
-# Main function
+        if args.operation == "mean":
+            result = calculate_mean(fires)
+            print(f"Mean number of forest fires in {args.country}: {result}")
+        elif args.operation == "median":
+            result = calculate_median(fires)
+            print(f"Median number of forest fires in {args.country}: {result}")
+        elif args.operation == "stddev":
+            result = calculate_stddev(fires)
+            print(
+                f"Standard deviation of forest fires in {args.country}: "
+                f"{result}"
+            )
+        else:
+            print(f"Number of forest fires in {args.country}: {fires}")
+
+    except FileNotFoundError as fnf_error:
+        print(fnf_error, file=sys.stderr)
+        sys.exit(1)
+    except ValueError as ve:
+        print(ve, file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Unexpected Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
 if __name__ == "__main__":
     main()

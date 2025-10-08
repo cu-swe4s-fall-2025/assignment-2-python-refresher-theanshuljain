@@ -94,6 +94,30 @@ chmod +x test/func/test_print_fires.sh
 
 ---
 
+# Automated Testing with GitHub Actions
+
+This repository implements continuous integration using GitHub Actions to ensure code quality and functionality. The automated testing system:
+
+## Testing Triggers
+- **Push events**: Tests run automatically on pushes to any branch
+- **Pull requests**: Tests run when pull requests are made to the main branch
+
+## Test Suite
+The CI pipeline includes three types of automated testing:
+
+1. **Unit Tests**: Validates individual functions in `my_utils.py` using Python's unittest framework
+2. **Functional Tests**: End-to-end testing of `print_fires.py` using the ssshtest framework
+3. **Style Checks**: Code quality enforcement using pycodestyle linter
+
+## Workflow Configuration
+- **Environment**: Tests run on Ubuntu latest with micromamba for dependency management
+- **Dependencies**: Managed through `environment.yml` with conda-forge and bioconda channels
+- **Parallel Execution**: All three test types run concurrently for faster feedback
+
+The automated testing ensures that all code changes maintain functionality and adhere to Python style guidelines before integration.
+
+---
+
 # Function Details
 
 ### `get_column(file_name, query_column, query_value, result_column=1)`
